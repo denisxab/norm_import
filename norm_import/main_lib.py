@@ -41,10 +41,10 @@ def iimport(self_file: str = None,
             absolute_path = absolute_path.__str__()
         path = absolute_path
     else:
-        path = join(sep.join(Path(self_file).parts[:(count_up + 1) * -1]), f"{module_name}.py")
+        path = join(sep.join(Path(self_file).parts[:(count_up + 1) * -1])[1:], f"{module_name}.py")
     if splitext(path)[1] != ".py":
         raise ValueError(f"Файл должен иметь расширение .py")
     spec: Optional[ModuleSpec] = importlib.util.spec_from_file_location("my_module", path)
-    __module: ModuleType = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(__module)
-    return ObjFrom(__module)
+    _module: ModuleType = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(_module)
+    return ObjFrom(_module)
